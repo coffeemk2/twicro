@@ -1,0 +1,6 @@
+<h1>Tweet#input</h1>
+<%= form_tag("/show", method: "get") do %>
+  <%= label_tag(:q, "Search for:") %>
+  <%= text_field_tag(:q) %>
+  <%= submit_tag("Search") %>
+<% end %>
