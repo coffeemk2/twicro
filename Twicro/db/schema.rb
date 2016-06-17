@@ -11,13 +11,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160617104423) do
+ActiveRecord::Schema.define(version: 20160617132320) do
+
+  create_table "blacks", force: :cascade do |t|
+    t.integer  "temp_id"
+    t.integer  "column"
+    t.integer  "row"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "relations", force: :cascade do |t|
+    t.integer  "temp_id"
+    t.integer  "no1"
+    t.integer  "index1"
+    t.integer  "no2"
+    t.integer  "index2"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "temps", force: :cascade do |t|
+    t.integer  "height"
+    t.integer  "width"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "tweets", force: :cascade do |t|
     t.integer  "tweet_id",   limit: 8
     t.string   "text"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+  end
+
+  create_table "whites", force: :cascade do |t|
+    t.integer  "temp_id"
+    t.integer  "no"
+    t.integer  "column"
+    t.integer  "row"
+    t.integer  "length"
+    t.boolean  "horizonal"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "words", force: :cascade do |t|
