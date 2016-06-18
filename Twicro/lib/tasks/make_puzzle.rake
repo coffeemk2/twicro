@@ -62,5 +62,63 @@ namespace :make_puzzle do
 
   end
 
+  desc "初期化とか"
+  task answers: :environment do
+    temp = 1
+    @goal=["トカイ","トクラ","イナカ","ラッカ"]
+
+    @question = []
+    @answer = []
+    size = Temp.find(temp)
+    array = []
+    size.width.times{
+      array.push("")
+    }
+    size.height.times{
+      @question.push(array.dup)
+      @answer.push(array.dup)
+    }
+
+    whites = White.where(temp_id:temp)
+    whites.each do | white |
+      if @question[white.row][white.column] != ""
+        @question[white.row][white.column] +=  ","
+      end
+      @question[white.row][white.column] += white.no.to_s
+    end
+
+    blacks = Black.where(temp_id:temp)
+    blacks.each do | black |
+      @question[black.row][black.column] = "*"
+    end
+
+    whites.each do | white |
+      count = 0
+      white.length.times{
+        if white.horizonal
+          @answer[white.row][white.column + count] = @goal[white.no][count]
+        else
+          @answer[white.row + count][white.column] = @goal[white.no][count]
+        end
+        count += 1
+      }
+    end
+
+    @hint_v = []
+    @hint_h = []
+
+    whites.each do | white |
+      if white.horizonal
+        @hint_h.push([white.no, Tweet.find_by(tweet_id:@goal[white.no].tweet_id)])
+      else
+        @hint_v.push([white.no, Tweet.find_by(tweet_id:@goal[white.no].tweet_id)])
+      end
+    end
+
+    puts @hint_h
+    puts "*******"
+    puts @hint_v
+
+  end
 
 end

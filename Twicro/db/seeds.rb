@@ -37,10 +37,10 @@ Relation.create(temp_id:1, no1:2, index1:2, no2:3, index2:2)
 #
 Temp.create(height:4, width:4)
 
-Black.create(temp_id:2, column:1, row:0)
-Black.create(temp_id:2, column:3, row:1)
+Black.create(temp_id:2, column:0, row:1)
+Black.create(temp_id:2, column:1, row:3)
 Black.create(temp_id:2, column:2, row:2)
-Black.create(temp_id:2, column:0, row:3)
+Black.create(temp_id:2, column:3, row:0)
 
 White.create(temp_id:2, no:0, row:0, column:0, length:3, horizonal:true)
 White.create(temp_id:2, no:1, row:0, column:1, length:3, horizonal:false)

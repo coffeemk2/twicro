@@ -17,7 +17,19 @@ class TweetController < ApplicationController
 
     uid = uid_max + 1
 
+
+    if params["q"] == ""
+      redirect_to :action => "error"
+    end
+
     user = params["q"]
+
+    if params["temp"] == ""
+      temp = 1
+    else
+      temp = params["temp"].to_i
+    end
+
 
     # client = Twitter::REST::Client.new do |config|
     #   config.consumer_key        = "8DLtV8xehV2S7jXjwHCN5a56B"
@@ -40,7 +52,7 @@ class TweetController < ApplicationController
       # 正規表現
       target = tweet.text.dup
       target = target.gsub(/https?:\/\/[\S]+/,"")
-      target = target.gsub(/\@\.+\s/,"")
+      target = target.gsub(/\@.+\s/,"")
       target = target.gsub(/amp/,"")
 
       nm.parse(target) do |text|
@@ -119,25 +131,80 @@ class TweetController < ApplicationController
 
     end # def set_word end
 
-    temp = 2
     if set_word(temp,0,uid)
-      @goal.each do |goal|
-        puts goal.kana
-        puts Tweet.find_by(tweet_id:goal.tweet_id).text
-      end
 
-      Word.where(uid:uid).delete_all
-      Tweet.where(uid:uid).delete_all
     else
       Word.where(uid:uid).delete_all
       Tweet.where(uid:uid).delete_all
 
       redirect_to :action => "error"
     end
-  end # def show end
 
-  def answer
-  end
+    @question = []
+    @answer = []
+    size = Temp.find(temp)
+    array = []
+    size.width.times{
+      array.push("")
+    }
+    size.height.times{
+      @question.push(array.dup)
+      @answer.push(array.dup)
+    }
+
+    whites = White.where(temp_id:temp)
+    whites.each do | white |
+      if @question[white.row][white.column] != ""
+        @question[white.row][white.column] +=  ","
+      end
+      @question[white.row][white.column] += white.no.to_s
+    end
+
+    blacks = Black.where(temp_id:temp)
+    blacks.each do | black |
+      @question[black.row][black.column] = "*"
+      @answer[black.row][black.column] = "*"
+    end
+
+
+
+    whites.each do | white |
+      count = 0
+      white.length.times{
+        if white.horizonal
+          @answer[white.row][white.column + count] = @goal[white.no].kana[count]
+        else
+          @answer[white.row + count][white.column] = @goal[white.no].kana[count]
+        end
+        count += 1
+      }
+    end
+
+    @hint_v = []
+    @hint_h = []
+
+    whites.each do | white |
+      text = Tweet.find_by(tweet_id:@goal[white.no].tweet_id).text
+
+      t = text.split(@goal[white.no].surface,2)
+      str = t[0]
+      @goal[white.no].length.times{
+        str += "◯"
+      }
+      str += t[1]
+
+      if white.horizonal
+        @hint_h.push([white.no, str])
+      else
+        @hint_v.push([white.no, str])
+      end
+    end
+
+    Word.where(uid:uid).delete_all
+    Tweet.where(uid:uid).delete_all
+
+
+  end # def show end
 
   def error
   end
