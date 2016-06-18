@@ -23,12 +23,11 @@ class TweetController < ApplicationController
     end
 
     user = params["q"]
-
-    if params["temp"] == ""
+    temp = params["temp"].to_i
+    if temp < 1
       temp = 1
-    else
-      temp = params["temp"].to_i
     end
+
 
 
     # client = Twitter::REST::Client.new do |config|
