@@ -25,7 +25,7 @@ Relation.create(temp_id:1, no1:0, index1:0, no2:1, index2:0)
 Relation.create(temp_id:1, no1:0, index1:2, no2:2, index2:0)
 Relation.create(temp_id:1, no1:1, index1:2, no2:3, index2:0)
 Relation.create(temp_id:1, no1:2, index1:2, no2:3, index2:2)
-
+#
 # =========================================
 
 # =========================================
@@ -57,8 +57,7 @@ Relation.create(temp_id:2, no1:1, index1:1, no2:3, index2:0)
 Relation.create(temp_id:2, no1:1, index1:2, no2:4, index2:1)
 Relation.create(temp_id:2, no1:2, index1:1, no2:3, index2:1)
 Relation.create(temp_id:2, no1:3, index1:2, no2:6, index2:0)
-
 Relation.create(temp_id:2, no1:4, index1:0, no2:5, index2:0)
 Relation.create(temp_id:2, no1:6, index1:2, no2:7, index2:1)
-
+#
 # =========================================

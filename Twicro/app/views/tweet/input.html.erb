@@ -1,6 +1,17 @@
-<h1>Tweet#input</h1>
-<%= form_tag("/show", method: "get") do %>
-  <%= label_tag(:q, "Search for:") %>
-  <%= text_field_tag(:q) %>
-  <%= submit_tag("Search") %>
-<% end %>
+<div id="wrapper">
+
+  <h1>ツイクロ</h1>
+
+  <div id="margin-top">
+    <form class="form-inline" action="/show" method="get">
+      <input type="text" class="form-control" name="q" id="q" placeholder="Twitter ID">
+      <button type="submit" class="btn btn-primary">Make a Puzzle!</button>
+    </form>
+  </div>
+  <div id="margin-top">
+    <p>TwitterのIDを入力すると，ツイートに応じたクロスワードパズルを作成します</p>
+    <p>鍵アカウントのIDは読み込めません</p>
+    <p>約1000件のツイートを取得するので時間がかかります</p>
+    <p>ツイートの内容によってはパズルを作成できないこともあります</p>
+  </div>
+</div>

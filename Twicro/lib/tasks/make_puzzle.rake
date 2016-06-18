@@ -5,6 +5,7 @@ namespace :make_puzzle do
     all_word = Word.all
     all_word.each do |w|
       w.is_used = false
+      w.save
     end
 
     @goal = []
@@ -43,7 +44,6 @@ namespace :make_puzzle do
             end
           end
         end
-
 
         return false # not match
 

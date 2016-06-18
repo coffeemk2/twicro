@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(version: 20160617132320) do
   end
 
   create_table "tweets", force: :cascade do |t|
+    t.integer  "uid"
     t.integer  "tweet_id",   limit: 8
     t.string   "text"
     t.datetime "created_at",           null: false
@@ -57,6 +58,7 @@ ActiveRecord::Schema.define(version: 20160617132320) do
   end
 
   create_table "words", force: :cascade do |t|
+    t.integer  "uid"
     t.string   "surface"
     t.string   "kana"
     t.integer  "length"

@@ -1,6 +1,7 @@
 class CreateWords < ActiveRecord::Migration
   def change
     create_table :words do |t|
+      t.integer :uid
       t.string :surface
       t.string :kana
       t.integer :length
