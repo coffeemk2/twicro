@@ -37,6 +37,10 @@ class TweetController < ApplicationController
     #   config.access_token_secret = "p6Eqdangk13dFbYDfPdW8Yym1DvKInMQ2h2Bl5BE49n5B"
     # end
 
+    begin
+
+
+
 
     nm = Natto::MeCab.new(dicdir: "/usr/local/lib/mecab/dic/mecab-ipadic-neologd")
     # nm = Natto::MeCab.new(dicdir: "/usr/local/lib/mecab/dic/mecab-ipadic-neologd",node_format: '%m,%f[1],%f[7]')
@@ -201,6 +205,10 @@ class TweetController < ApplicationController
 
       Word.where(uid:uid).delete_all
       Tweet.where(uid:uid).delete_all
+    end
+
+    rescue ExceptionName
+      redirect_to :action => "error"
     end
 
   end # def show end
