@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  temp_id: 1
+  'no': 1
+  column: 1
+  row: 1
+  length: 1
+  horizonal: false
+
+two:
+  temp_id: 1
+  'no': 1
+  column: 1
+  row: 1
+  length: 1
+  horizonal: false

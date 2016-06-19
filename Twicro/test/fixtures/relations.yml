@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  temp_id: 1
+  no1: 1
+  index1: 1
+  no2: 1
+  index2: 1
+
+two:
+  temp_id: 1
+  no1: 1
+  index1: 1
+  no2: 1
+  index2: 1

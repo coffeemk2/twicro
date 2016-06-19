@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get 'input' => 'tweet#input'
   get 'show' => 'tweet#show'
+  get 'error' => 'tweet#error'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
