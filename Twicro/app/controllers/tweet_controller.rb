@@ -61,21 +61,21 @@ class TweetController < ApplicationController
 
           if yomi != "*"
             Word.create(
-              uid: uid,
-              surface: text.surface,
-              kana: yomi,
-              length: yomi.length,
-              is_used: false,
-              tweet_id: tweet.id
+            uid: uid,
+            surface: text.surface,
+            kana: yomi,
+            length: yomi.length,
+            is_used: false,
+            tweet_id: tweet.id
             )
           end # 読みあり end
         end # if 固有名詞 end
       end # parse end
 
       Tweet.create(
-        uid: uid,
-        tweet_id: tweet.id,
-        text: tweet.text
+      uid: uid,
+      tweet_id: tweet.id,
+      text: tweet.text
       )
     end # tweet end
 
@@ -130,78 +130,78 @@ class TweetController < ApplicationController
 
     end # def set_word end
 
-    if set_word(temp,0,uid)
+    if !set_word(temp,0,uid)
 
-    else
       Word.where(uid:uid).delete_all
       Tweet.where(uid:uid).delete_all
 
       redirect_to :action => "error"
-    end
-
-    @question = []
-    @answer = []
-    size = Temp.find(temp)
-    array = []
-    size.width.times{
-      array.push("")
-    }
-    size.height.times{
-      @question.push(array.dup)
-      @answer.push(array.dup)
-    }
-
-    whites = White.where(temp_id:temp)
-    whites.each do | white |
-      if @question[white.row][white.column] != ""
-        @question[white.row][white.column] +=  ","
-      end
-      @question[white.row][white.column] += white.no.to_s
-    end
-
-    blacks = Black.where(temp_id:temp)
-    blacks.each do | black |
-      @question[black.row][black.column] = "*"
-      @answer[black.row][black.column] = "*"
-    end
+    else
 
 
+      @question = []
+      @answer = []
+      size = Temp.find(temp)
+      array = []
+      size.width.times{
+        array.push("")
+      }
+      size.height.times{
+        @question.push(array.dup)
+        @answer.push(array.dup)
+      }
 
-    whites.each do | white |
-      count = 0
-      white.length.times{
-        if white.horizonal
-          @answer[white.row][white.column + count] = @goal[white.no].kana[count]
-        else
-          @answer[white.row + count][white.column] = @goal[white.no].kana[count]
+      whites = White.where(temp_id:temp)
+      whites.each do | white |
+        if @question[white.row][white.column] != ""
+          @question[white.row][white.column] +=  ","
         end
-        count += 1
-      }
-    end
-
-    @hint_v = []
-    @hint_h = []
-
-    whites.each do | white |
-      text = Tweet.find_by(tweet_id:@goal[white.no].tweet_id).text
-
-      t = text.split(@goal[white.no].surface,2)
-      str = t[0]
-      @goal[white.no].length.times{
-        str += "◯"
-      }
-      str += t[1]
-
-      if white.horizonal
-        @hint_h.push([white.no, str])
-      else
-        @hint_v.push([white.no, str])
+        @question[white.row][white.column] += white.no.to_s
       end
+
+      blacks = Black.where(temp_id:temp)
+      blacks.each do | black |
+        @question[black.row][black.column] = "*"
+        @answer[black.row][black.column] = "*"
+      end
+
+
+
+      whites.each do | white |
+        count = 0
+        white.length.times{
+          if white.horizonal
+            @answer[white.row][white.column + count] = @goal[white.no].kana[count]
+          else
+            @answer[white.row + count][white.column] = @goal[white.no].kana[count]
+          end
+          count += 1
+        }
+      end
+
+      @hint_v = []
+      @hint_h = []
+
+      whites.each do | white |
+        text = Tweet.find_by(tweet_id:@goal[white.no].tweet_id).text
+
+        t = text.split(@goal[white.no].surface,2)
+        str = t[0]
+        @goal[white.no].length.times{
+          str += "◯"
+        }
+        str += t[1]
+
+        if white.horizonal
+          @hint_h.push([white.no, str])
+        else
+          @hint_v.push([white.no, str])
+        end
+      end
+
+      Word.where(uid:uid).delete_all
+      Tweet.where(uid:uid).delete_all
     end
-
-    Word.where(uid:uid).delete_all
-    Tweet.where(uid:uid).delete_all
-
 
   end # def show end
 
@@ -209,36 +209,37 @@ class TweetController < ApplicationController
   end
 
   private
-    def timeline(user)
-      client = Twitter::REST::Client.new do |config|
-        config.consumer_key        = "8DLtV8xehV2S7jXjwHCN5a56B"
-        config.consumer_secret     = "MvvQRKSn2TnglCF4E0NDWcQynzkdfrP2f8pamuG0ZYbkrmVoCx"
-        config.access_token        = "250649547-hf8OjfuC2cyY9KEgyjmKMuWnH2jrHedy6KvKjEdH"
-        config.access_token_secret = "p6Eqdangk13dFbYDfPdW8Yym1DvKInMQ2h2Bl5BE49n5B"
-      end
-      options = {count: 200, include_rts: false, exclude_replies: false}
-      client.user_timeline(user,options)
+  def timeline(user)
+    client = Twitter::REST::Client.new do |config|
+      config.consumer_key        = "8DLtV8xehV2S7jXjwHCN5a56B"
+      config.consumer_secret     = "MvvQRKSn2TnglCF4E0NDWcQynzkdfrP2f8pamuG0ZYbkrmVoCx"
+      config.access_token        = "250649547-hf8OjfuC2cyY9KEgyjmKMuWnH2jrHedy6KvKjEdH"
+      config.access_token_secret = "p6Eqdangk13dFbYDfPdW8Yym1DvKInMQ2h2Bl5BE49n5B"
     end
+    options = {count: 200, include_rts: false, exclude_replies: false}
+    client.user_timeline(user,options)
+  end
 
-    def get_1000_tweets(user)
-      tweets = []
-      client = Twitter::REST::Client.new do |config|
-        config.consumer_key        = "8DLtV8xehV2S7jXjwHCN5a56B"
-        config.consumer_secret     = "MvvQRKSn2TnglCF4E0NDWcQynzkdfrP2f8pamuG0ZYbkrmVoCx"
-        config.access_token        = "250649547-hf8OjfuC2cyY9KEgyjmKMuWnH2jrHedy6KvKjEdH"
-        config.access_token_secret = "p6Eqdangk13dFbYDfPdW8Yym1DvKInMQ2h2Bl5BE49n5B"
-      end
-      options = {count: 200, include_rts: false, exclude_replies: false}
+  def get_1000_tweets(user)
+    tweets = []
+    client = Twitter::REST::Client.new do |config|
+      config.consumer_key        = "8DLtV8xehV2S7jXjwHCN5a56B"
+      config.consumer_secret     = "MvvQRKSn2TnglCF4E0NDWcQynzkdfrP2f8pamuG0ZYbkrmVoCx"
+      config.access_token        = "250649547-hf8OjfuC2cyY9KEgyjmKMuWnH2jrHedy6KvKjEdH"
+      config.access_token_secret = "p6Eqdangk13dFbYDfPdW8Yym1DvKInMQ2h2Bl5BE49n5B"
+    end
+    options = {count: 200, include_rts: false, exclude_replies: false}
+    tweets.push(client.user_timeline(user,options))
+    tweets = tweets.flatten
+    max_id = tweets.last.id - 1
+    4.times{
+      options = {count: 200, include_rts: false, exclude_replies: false,max_id: max_id}
       tweets.push(client.user_timeline(user,options))
       tweets = tweets.flatten
       max_id = tweets.last.id - 1
-      4.times{
-        options = {count: 200, include_rts: false, exclude_replies: false,max_id: max_id}
-        tweets.push(client.user_timeline(user,options))
-        tweets = tweets.flatten
-        max_id = tweets.last.id - 1
-      }
-      tweets
-    end
+    }
+    tweets
+  end
+
 
 end
