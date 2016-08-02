@@ -1,0 +1,1 @@
+bash -c "export RAILS_SERVE_STATIC_FILES=1 && export SECRET_KEY_BASE=a36eae0b247327e6384da7233cfcd3e57240d5147de7a2dcd3b7f6308c5c3ca53859f88305a752a7d81ecddf2193c486d1d95ce5f9a7bdf1ec0620e97b9847 && RAILS_ENV=production bundle exec rake assets:precompile && RAILS_ENV=production bundle exec rake db:migrate && RAILS_ENV=production bundle exec rails s -p 3000 -b '0.0.0.0'"
