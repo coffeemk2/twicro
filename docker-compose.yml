@@ -1,0 +1,20 @@
+db:
+  environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    - MYSQL_DATABASE=db_production
+    - MYSQL_PASSWORD=yzjDIbkqnzi3nd0
+    - MYSQL_ROOT_PASSWORD=yzjDIbkqnzi3nd0
+  image: mysql
+  volumes:
+    - db-twicro:/var/lib/mysql
+    - mysql:/etc/mysql
+  stdin_open: true
+  volume_driver: convoy-gluster
+web:
+  command:
+    - bash
+    - -c
+    - RAILS_ENV=production bundle exec rake assets:precompile && RAILS_ENV=production bundle exec rake db:migrate && RAILS_ENV=production bundle exec rails s -p 3000 -b '0.0.0.0'
+  image: docker.planningdev.com:5000/twicro/server
+  links:
+    - db:db
